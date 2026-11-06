@@ -10,5 +10,6 @@ export { fill, mergeMessages, resolveLocale, type DeepPartial, type Messages } f
 export type { Illustrations, SceneContext } from "./ui/scene";
 export { CSS as PWA_INSTALL_CSS, injectStyles } from "./ui/styles";
 export { promptStatus } from "./ui/views/prompt";
+export { firstTapText, hintSteps, SCENE_MS } from "./ui/views/ios";
 export { en } from "./locales/en";
 export { es } from "./locales/es";
