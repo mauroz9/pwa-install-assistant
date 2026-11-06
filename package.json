@@ -1,0 +1,83 @@
+{
+  "name": "pwa-install-assistant",
+  "version": "0.0.0",
+  "description": "Get your web app onto the home screen: an install assistant that points at the real button on every phone and tablet, and moves on by itself where the browser allows. Vanilla, React, Vue, Svelte, Solid, Angular, Web Component.",
+  "keywords": [
+    "pwa",
+    "install",
+    "add-to-home-screen",
+    "a2hs",
+    "beforeinstallprompt",
+    "ios",
+    "safari",
+    "android",
+    "web-app",
+    "react",
+    "vue",
+    "svelte",
+    "solid",
+    "angular",
+    "web-component"
+  ],
+  "license": "MIT",
+  "author": "Mauro Serrano",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mauroz9/pwa-install-assistant.git"
+  },
+  "homepage": "https://mauroz9.github.io/pwa-install-assistant/",
+  "bugs": "https://github.com/mauroz9/pwa-install-assistant/issues",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./headless": {
+      "types": "./dist/headless.d.ts",
+      "import": "./dist/headless.js",
+      "require": "./dist/headless.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.es.md",
+    "LICENSE"
+  ],
+  "workspaces": [
+    "demo"
+  ],
+  "scripts": {
+    "build": "tsup && node scripts/postbuild.mjs",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "size": "node scripts/size.mjs",
+    "check:pack": "node scripts/check-pack.mjs",
+    "demo": "npm run build && npm run dev -w demo",
+    "test:e2e": "playwright test",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "happy-dom": "^21.0.4",
+    "prettier": "^3.9.10",
+    "tsup": "^9.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
+  }
+}
