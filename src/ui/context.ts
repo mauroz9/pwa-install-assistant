@@ -18,6 +18,8 @@ export interface UiContext {
   /** Arrow drawing options. */
   arrow: { size: number; color?: string; render?: (el: HTMLElement) => void };
   qr: boolean | ((url: string) => SVGElement);
+  /** Gives an element outside the container (arrow, hint) the theme and colour scheme. */
+  decorate(el: HTMLElement): void;
   /** Fixed overlays (arrow, pinned hint) go here: `document.body`. */
   overlayHost(): HTMLElement;
   /** Modal/sheet: close it without counting as a dismissal (e.g. to show the arrow). */

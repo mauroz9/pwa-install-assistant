@@ -28,7 +28,9 @@
   "homepage": "https://mauroz9.github.io/pwa-install-assistant/",
   "bugs": "https://github.com/mauroz9/pwa-install-assistant/issues",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -48,6 +50,37 @@
       "import": "./dist/qr.js",
       "require": "./dist/qr.cjs"
     },
+    "./locales/en": {
+      "types": "./dist/locales/en.d.ts",
+      "import": "./dist/locales/en.js",
+      "require": "./dist/locales/en.cjs"
+    },
+    "./locales/es": {
+      "types": "./dist/locales/es.d.ts",
+      "import": "./dist/locales/es.js",
+      "require": "./dist/locales/es.cjs"
+    },
+    "./locales/pt": {
+      "types": "./dist/locales/pt.d.ts",
+      "import": "./dist/locales/pt.js",
+      "require": "./dist/locales/pt.cjs"
+    },
+    "./locales/fr": {
+      "types": "./dist/locales/fr.d.ts",
+      "import": "./dist/locales/fr.js",
+      "require": "./dist/locales/fr.cjs"
+    },
+    "./locales/de": {
+      "types": "./dist/locales/de.d.ts",
+      "import": "./dist/locales/de.js",
+      "require": "./dist/locales/de.cjs"
+    },
+    "./locales/it": {
+      "types": "./dist/locales/it.d.ts",
+      "import": "./dist/locales/it.js",
+      "require": "./dist/locales/it.cjs"
+    },
+    "./style.css": "./dist/style.css",
     "./package.json": "./package.json"
   },
   "files": [
