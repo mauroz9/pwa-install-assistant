@@ -14,13 +14,25 @@
     <header class="hero">
       <p class="eyebrow">pwa-install-assistant</p>
       <h1>Get your web app onto the home&nbsp;screen.</h1>
-      <p class="lede">Coming soon: the live demo of the install assistant.</p>
+      <p class="lede">
+        An install assistant that points at the real button on every phone and tablet, and moves on by itself where the
+        browser allows.
+      </p>
       <div class="actions">
         <div class="install"><code>npm i pwa-install-assistant</code></div>
         <a class="ghost" href="https://github.com/mauroz9/pwa-install-assistant">GitHub</a>
       </div>
       <p class="version">v<span id="version"></span></p>
     </header>
+    <main>
+      <section class="panel" aria-label="Live assistant">
+        <div class="panel-head">
+          <p class="panel-title">Your device</p>
+          <button type="button" id="open-sheet" class="chip">Open as a sheet</button>
+        </div>
+        <div id="install"></div>
+      </section>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
