@@ -1,0 +1,15 @@
+{
+  "name": "example-html",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "pwa-install-assistant": "file:../.."
+  },
+  "devDependencies": {
+    "vite": "^8.3.6"
+  }
+}

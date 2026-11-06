@@ -23,6 +23,8 @@ jobs:
         run: npm run size
       - name: Package contents
         run: node scripts/check-pack.mjs
+      - name: Build every example
+        run: npm run build:examples
       - run: npm run build -w demo
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test
