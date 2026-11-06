@@ -3,7 +3,7 @@
 All notable changes to this project. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and the project uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] — 0.1.0
+## [0.1.0] — unreleased
 
 First release.
 
@@ -26,4 +26,4 @@ First release.
 - Real-browser harnesses: `e2e/ios` (XCUITest driving Safari on the simulator) and `e2e/android` (emulator, adb, CDP),
   with results in `docs/support.md`.
 
-[Unreleased]: https://github.com/mauroz9/pwa-install-assistant/commits/main
+[0.1.0]: https://github.com/mauroz9/pwa-install-assistant/releases/tag/v0.1.0
