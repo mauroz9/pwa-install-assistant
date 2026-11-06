@@ -23,6 +23,8 @@ import { detectedLine, installedCard, picker, seenNotice } from "./parts";
 import type { Illustrations } from "./scene";
 import { stepper } from "./stepper";
 import { injectStyles } from "./styles";
+import { diagnostics } from "./views/diagnostics";
+import { iosAssistant } from "./views/ios";
 import { promptAssistant, promptButton } from "./views/prompt";
 
 export type AssistantMode = "inline" | "modal" | "sheet";
@@ -198,7 +200,7 @@ export function createInstallAssistant(
     const guideShown = (state.view === "guide" || state.view === "ios-arrow") && !state.promptFinishing;
     const hidePicker = state.view === "standalone" || state.view === "installed";
     return {
-      diagnostics: "",
+      diagnostics: options.debug ? "on" : "",
       notice: state.guideSeen && !state.picked && stepGuide && guideShown && !state.installed ? "on" : "",
       detected: hidePicker || !state.guide ? "" : `${state.guide}|${state.picked}`,
       prompt: state.prompt && state.view === "guide" ? state.prompt : "",
@@ -211,7 +213,7 @@ export function createInstallAssistant(
   function build(name: (typeof order)[number], state: InstallState): Part | null {
     switch (name) {
       case "diagnostics":
-        return null;
+        return diagnostics(ctx);
       case "notice":
         return { el: seenNotice(ctx) };
       case "detected": {
@@ -240,6 +242,7 @@ export function createInstallAssistant(
       case "unknown":
         return { el: h("p", { class: "pia-card pia-p" }, messages.unknown) };
       case "ios-arrow":
+        return hasSteps(state.guide) ? iosAssistant(ctx, state, buildGuide(state.guide, messages, ctx.app)) : null;
       case "guide":
         return hasSteps(state.guide) ? stepper(ctx, buildGuide(state.guide, messages, ctx.app)) : null;
       case "in-app":
