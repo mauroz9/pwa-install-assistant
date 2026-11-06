@@ -63,7 +63,21 @@ export function diagnostics(ctx: UiContext): Part {
     target.addEventListener(name, handler);
     return () => target.removeEventListener(name, handler);
   });
-  const offEvents = ctx.controller.on("*", (event) => log(`assistant:${event.type}`));
+  const offEvents = ctx.controller.on("*", (event) => {
+    log(`assistant:${event.type}`);
+    // Where the arrow really is, to compare with the button measured by XCUITest on a simulator.
+    if (event.type === "arrow-start") {
+      requestAnimationFrame(() => {
+        const arrow = document.querySelector(".pia-arrow");
+        if (!arrow) return log("arrow: none (text only)");
+        const r = arrow.getBoundingClientRect();
+        const cx = Math.round(r.left + r.width / 2);
+        log(
+          `arrow: cx=${cx} fromRight=${Math.round(window.innerWidth - cx)} top=${Math.round(r.top)} bottom=${Math.round(window.innerHeight - r.bottom)} vw=${window.innerWidth}`,
+        );
+      });
+    }
+  });
   log("start");
 
   const el = h(

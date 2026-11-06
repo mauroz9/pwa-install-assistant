@@ -1,0 +1,43 @@
+# XcodeGen spec of an empty host app plus a UI-test bundle that drives Safari,
+# Settings and SpringBoard on the iOS simulator. `xcodegen` writes the project.
+name: PiaProbe
+options:
+  bundleIdPrefix: dev.pwainstallassistant.probe
+  deploymentTarget:
+    iOS: "26.0"
+settings:
+  base:
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGNING_REQUIRED: "NO"
+    DEVELOPMENT_TEAM: ""
+    GENERATE_INFOPLIST_FILE: YES
+    SWIFT_VERSION: "5.0"
+targets:
+  ProbeApp:
+    type: application
+    platform: iOS
+    sources: [App]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.pwainstallassistant.probe.app
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        TARGETED_DEVICE_FAMILY: "1,2"
+  ProbeUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: ProbeApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.pwainstallassistant.probe.uitests
+        TEST_TARGET_NAME: ProbeApp
+        TARGETED_DEVICE_FAMILY: "1,2"
+schemes:
+  Probe:
+    build:
+      targets:
+        ProbeApp: all
+        ProbeUITests: [test]
+    test:
+      targets: [ProbeUITests]
