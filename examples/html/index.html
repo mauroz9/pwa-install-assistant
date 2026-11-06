@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Acme · Install</title>
+  </head>
+  <body>
+    <h1>Install Acme</h1>
+
+    <!-- Inline, in the page. -->
+    <pwa-install-assistant app-name="Acme" icon="/icon-192.png" accent="#0f766e"></pwa-install-assistant>
+
+    <!-- Or as a bottom sheet that opens after the first tap, once. -->
+    <pwa-install-assistant id="sheet" app-name="Acme" mode="sheet" trigger="gesture"></pwa-install-assistant>
+    <button type="button" id="install">Install the app</button>
+
+    <!--
+      Without a bundler: <script type="module" src="https://esm.sh/pwa-install-assistant/element"></script>
+    -->
+    <script type="module">
+      import "pwa-install-assistant/element";
+
+      document.querySelector("#install").addEventListener("click", () => document.querySelector("#sheet").open());
+      document.addEventListener("pwa-install", (event) => console.log("assistant:", event.detail.type));
+    </script>
+  </body>
+</html>

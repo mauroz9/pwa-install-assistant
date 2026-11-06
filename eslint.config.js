@@ -24,17 +24,17 @@ export default tseslint.config(
       "no-eval": "error",
       "no-implied-eval": "error",
       "no-new-func": "error",
+    },
+  },
+  {
+    files: ["src/**/*.ts", "src/**/*.tsx"],
+    rules: {
       "no-restricted-properties": [
         "error",
         { property: "innerHTML", message: "Build nodes with h(): innerHTML breaks Trusted Types." },
         { property: "outerHTML", message: "Build nodes with h()." },
         { property: "insertAdjacentHTML", message: "Build nodes with h()." },
       ],
-    },
-  },
-  {
-    files: ["src/**/*.ts", "src/**/*.tsx"],
-    rules: {
       "no-restricted-globals": [
         "error",
         { name: "fetch", message: "The library makes no network calls." },

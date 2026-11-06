@@ -4,23 +4,119 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#07080d" />
+    <meta name="apple-mobile-web-app-title" content="Acme Notes" />
     <title>pwa-install-assistant</title>
     <meta
       name="description"
-      content="An install assistant that points at the real button on every phone and tablet, and moves on by itself where the browser allows."
+      content="An install assistant for web apps: it points at the real button on every phone and tablet, and moves on by itself where the browser allows."
     />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
   </head>
   <body>
     <header class="hero">
       <p class="eyebrow">pwa-install-assistant</p>
       <h1>Get your web app onto the home&nbsp;screen.</h1>
-      <p class="lede">Coming soon: the live demo of the install assistant.</p>
+      <p class="lede">
+        An install assistant that knows every phone: it points at the real Share or <code>•••</code> button in Safari,
+        drives Chrome's own install dialog on Android, and moves on by itself wherever the browser lets it.
+      </p>
       <div class="actions">
-        <div class="install"><code>npm i pwa-install-assistant</code></div>
+        <div class="install"><code>npm i pwa-install-assistant</code><button type="button" id="copy">Copy</button></div>
         <a class="ghost" href="https://github.com/mauroz9/pwa-install-assistant">GitHub</a>
+        <a class="ghost" href="#use">React · Vue · Svelte · Solid · Angular · HTML</a>
       </div>
-      <p class="version">v<span id="version"></span></p>
     </header>
+
+    <main>
+      <section class="sim" aria-labelledby="sim-title">
+        <div class="sim-side">
+          <h2 id="sim-title">Simulate a device</h2>
+          <p class="hint">
+            The page runs inside a frame as big as that phone's screen; the browser's bars are drawn around it, where
+            they really are. Try «Start» on an iPhone, or fire Chrome's install event on Android.
+          </p>
+          <label class="field"
+            >Device
+            <select id="device"></select>
+          </label>
+          <div class="field" id="bar-field">
+            <span>Safari bar (Settings › Apps › Safari)</span>
+            <div class="seg" role="radiogroup" aria-label="Safari bar">
+              <button type="button" role="radio" aria-checked="true" data-bar="compact">Compact</button>
+              <button type="button" role="radio" aria-checked="false" data-bar="bottom">Bottom</button>
+              <button type="button" role="radio" aria-checked="false" data-bar="top">Top</button>
+            </div>
+          </div>
+          <label class="field"
+            >Language
+            <select id="lang">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="pt">Português</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="it">Italiano</option>
+            </select>
+          </label>
+          <div class="field">
+            <span>Accent</span>
+            <div class="swatches" id="accents"></div>
+          </div>
+          <div class="sim-buttons">
+            <button type="button" class="chip chip-strong" id="offer" hidden>Fire beforeinstallprompt</button>
+            <button type="button" class="chip" id="reset">Start over</button>
+          </div>
+          <details class="log" open>
+            <summary>Events (<code>onEvent</code>)</summary>
+            <ol id="log" aria-live="off"></ol>
+          </details>
+        </div>
+        <div class="sim-stage" id="stage">
+          <div class="phone" id="phone">
+            <div class="phone-status" aria-hidden="true">
+              <span>9:41</span><span class="island"></span><span>●●●</span>
+            </div>
+            <div class="phone-top" id="phone-top" aria-hidden="true"></div>
+            <iframe id="frame" title="Simulated device"></iframe>
+            <div class="phone-bottom" id="phone-bottom" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="real-title">
+        <div class="panel-head">
+          <h2 id="real-title" class="panel-title">Your device, for real</h2>
+          <button type="button" id="open-sheet" class="chip">Open as a sheet</button>
+        </div>
+        <p class="panel-note">This demo is an installable app: on a phone, the assistant below is the real thing.</p>
+        <div id="install"></div>
+      </section>
+
+      <section id="use" class="use">
+        <h2>Use it</h2>
+        <div class="tabs" role="tablist"></div>
+        <pre class="code"><code id="code"></code></pre>
+        <p class="hint">
+          Strict CSP? Pass your <code>nonce</code>. Zero dependencies, zero network calls; the QR encoder loads only on
+          desktop.
+          <a href="https://github.com/mauroz9/pwa-install-assistant/blob/main/docs/options.md">Every option</a> ·
+          <a href="https://github.com/mauroz9/pwa-install-assistant/blob/main/docs/support.md"
+            >what is verified, and how</a
+          >.
+        </p>
+      </section>
+    </main>
+
+    <footer class="credits">
+      <p>
+        Positions measured on the iOS 26.3 simulator and the Android emulator. Browser bars in the simulator are
+        drawings.
+      </p>
+      <p>MIT © Mauro Serrano · v<span id="version"></span></p>
+    </footer>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

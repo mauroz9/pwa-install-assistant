@@ -19,3 +19,7 @@ e2e/ios/build
 e2e/ios/*.xcodeproj
 e2e/android/out
 *.tgz
+next-env.d.ts
+e2e/ios/results
+e2e/ios/PiaProbe.xcodeproj
+e2e/android/out

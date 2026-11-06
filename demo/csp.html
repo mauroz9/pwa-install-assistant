@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- A strict policy: no 'unsafe-inline' for styles or scripts. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'nonce-pia-demo-nonce'; img-src 'self' data:; connect-src 'self' ws:"
+    />
+    <title>pwa-install-assistant · strict CSP</title>
+  </head>
+  <body>
+    <div id="install"></div>
+    <script type="module" src="/src/csp.ts"></script>
+  </body>
+</html>
