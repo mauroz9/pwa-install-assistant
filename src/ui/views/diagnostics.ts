@@ -72,7 +72,9 @@ export function diagnostics(ctx: UiContext): Part {
         if (!arrow) return log("arrow: none (text only)");
         const r = arrow.getBoundingClientRect();
         const cx = Math.round(r.left + r.width / 2);
-        log(`arrow: cx=${cx} fromRight=${Math.round(window.innerWidth - cx)} top=${Math.round(r.top)} bottom=${Math.round(window.innerHeight - r.bottom)} vw=${window.innerWidth}`);
+        log(
+          `arrow: cx=${cx} fromRight=${Math.round(window.innerWidth - cx)} top=${Math.round(r.top)} bottom=${Math.round(window.innerHeight - r.bottom)} vw=${window.innerWidth}`,
+        );
       });
     }
   });
