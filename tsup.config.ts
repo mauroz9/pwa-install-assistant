@@ -7,6 +7,7 @@ export default defineConfig({
   entry: {
     index: "src/index.ts",
     headless: "src/core/index.ts",
+    qr: "src/qr/index.ts",
   },
   format: ["esm", "cjs"],
   dts: true,
