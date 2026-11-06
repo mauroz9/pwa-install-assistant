@@ -28,5 +28,18 @@ The `Release` workflow checks that the tag matches `package.json`, runs lint, ty
 size budget and the package contents, publishes with `npm publish --provenance` and creates the GitHub Release with
 the notes (summary, changes, how to update).
 
+### Publishing by hand instead
+
+From your machine, logged in with `npm login`:
+
+```bash
+npm publish --dry-run   # check the file list (~75 files: dist/, READMEs, LICENSE)
+npm publish
+```
+
+If npm uses staged publishing, approve the version on npmjs.com afterwards. Then push the tag as above: the workflow
+sees the version is already on npm, skips `npm publish` and only creates the GitHub Release. (A hand-published
+version has no provenance statement; only the workflow can add one.)
+
 Before tagging, it is worth running the real-browser checks in [`e2e/ios`](../e2e/ios) and
 [`e2e/android`](../e2e/android) and updating [`support.md`](./support.md) with the date and version.

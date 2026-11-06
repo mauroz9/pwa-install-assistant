@@ -136,8 +136,7 @@
     "release:notes": "node scripts/release-notes.mjs"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "peerDependencies": {
     "react": ">=18",
