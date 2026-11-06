@@ -8,7 +8,12 @@ import { build } from "esbuild";
 
 /** Budgets in bytes, min+gzip, first load. Entries without a budget are only reported. */
 const BUDGETS = {
+  // The headless core: detection, support table, positions, state machine, storage.
   headless: 12 * 1024,
+  // The full UI with English and Spanish, without the QR encoder (loaded on demand).
+  index: 34 * 1024,
+  qr: 4 * 1024,
+  ...Object.fromEntries(["en", "es", "pt", "fr", "de", "it"].map((code) => [`locales/${code}`, 6 * 1024])),
 };
 
 const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));

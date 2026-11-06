@@ -15,7 +15,7 @@ import {
   type InstallState,
 } from "../core/controller";
 import type { Part, UiContext } from "./context";
-import { clear, h, uid } from "./dom";
+import { clear, h, setVars, uid } from "./dom";
 import { buildGuide, hasSteps } from "./guides";
 import { fill, mergeMessages, resolveLocale, type DeepPartial, type Messages } from "./i18n";
 import { icon } from "./icons";
@@ -29,6 +29,25 @@ import { desktopView, inAppView } from "./views/links";
 import { promptAssistant, promptButton } from "./views/prompt";
 
 export type AssistantMode = "inline" | "modal" | "sheet";
+
+/** Colours, type and shape. Every value is also a `--pia-*` CSS variable you can set yourself. */
+export interface Theme {
+  /** Buttons, arrows and highlights. Its hover, soft and border shades are derived with `color-mix()`. */
+  accent?: string;
+  /** Done steps and the «installed» notice. */
+  success?: string;
+  /** Corner radius: a number (px) or any CSS length. */
+  radius?: number | string;
+  /** Font family. Default: `inherit` (your page's). */
+  font?: string;
+  /** `light` (default), `dark`, or `auto` (follows `prefers-color-scheme`). */
+  scheme?: "light" | "dark" | "auto";
+  /** Any other variable, e.g. `{ "--pia-on-accent": "#000" }`. */
+  vars?: Record<string, string>;
+}
+
+/** When the modal or sheet opens by itself. */
+export type Trigger = "manual" | "load" | "gesture" | { delay: number };
 
 export interface InstallAssistantOptions extends Omit<ControllerOptions, "force"> {
   /** Shown in the texts and the drawings. Default: `document.title`. */
@@ -48,6 +67,21 @@ export interface InstallAssistantOptions extends Omit<ControllerOptions, "force"
   /** `inline` (default) renders into the element; `modal` and `sheet` open a dialog. */
   mode?: AssistantMode;
   steps?: { illustrations?: Illustrations };
+  theme?: Theme;
+  /** The arrow at Safari's real button: size in px (default 44), colour, or draw it yourself. */
+  arrow?: { size?: number; color?: string; render?: (el: HTMLElement) => void };
+  /**
+   * Modal and sheet only: open by itself on `load`, after `{ delay }` ms, on the first `gesture`
+   * (tap, click or key), or never (`manual`, default: call `open()`).
+   */
+  trigger?: Trigger;
+  /**
+   * Days before opening by itself again once the person closed it. Default `Infinity` (never again);
+   * `0` = every time. `open()` always works.
+   */
+  showAgainAfter?: number;
+  /** Extra condition to open by itself. Default: not already installed or running as the app. */
+  when?: (state: InstallState) => boolean;
   /** CSP nonce for the injected `<style>`. */
   nonce?: string;
   /** `false`: do not inject CSS (import `pwa-install-assistant/style.css` yourself). */
@@ -157,11 +191,34 @@ export function createInstallAssistant(
   const sections: Record<string, Section> = {};
   const order = ["diagnostics", "notice", "detected", "prompt", "orMenu", "main", "picker"] as const;
 
+  function themeVars(): Record<string, string | null> {
+    const t = options.theme ?? {};
+    const mix = (color: string, pct: number, toward: string) => `color-mix(in srgb, ${color} ${pct}%, ${toward})`;
+    return {
+      "--pia-accent": t.accent ?? null,
+      "--pia-accent-ink": t.accent ? mix(t.accent, 75, "var(--pia-fg)") : null,
+      "--pia-accent-soft": t.accent ? mix(t.accent, 12, "var(--pia-bg)") : null,
+      "--pia-accent-line": t.accent ? mix(t.accent, 40, "var(--pia-bg)") : null,
+      "--pia-success": t.success ?? null,
+      "--pia-success-soft": t.success ? mix(t.success, 14, "var(--pia-bg)") : null,
+      "--pia-success-ink": t.success ? mix(t.success, 45, "var(--pia-fg)") : null,
+      "--pia-radius": t.radius === undefined ? null : typeof t.radius === "number" ? `${t.radius}px` : t.radius,
+      "--pia-font": t.font ?? null,
+      ...(t.vars ?? {}),
+    };
+  }
+
+  function decorate(el: HTMLElement) {
+    el.setAttribute("data-scheme", options.theme?.scheme ?? "light");
+    setVars(el, themeVars());
+  }
+
   function buildContext() {
     messages = mergeMessages(resolveLocale(options.locale, options.locales), options.messages);
     const app = options.appName ?? (doc.title || "App");
     const url = options.appUrl ?? pageUrl();
     const ios = messages.browser.ios;
+    decorate(root);
     root.setAttribute("lang", messages.locale);
     root.setAttribute("dir", messages.dir);
     dialogTitle.textContent = fill(messages.common.title, { app });
@@ -189,7 +246,8 @@ export function createInstallAssistant(
         pickerSelect?.focus();
         pickerSelect?.scrollIntoView?.({ block: "center", behavior: "smooth" });
       },
-      arrow: { size: 44 },
+      arrow: { size: options.arrow?.size ?? 44, color: options.arrow?.color, render: options.arrow?.render },
+      decorate,
       qr: options.qr ?? true,
       overlayHost: () => doc.body,
       hideContainer() {
@@ -283,6 +341,38 @@ export function createInstallAssistant(
   const unsubscribe = controller.subscribe((state) => render(state));
   if (mode === "inline") controller.emit({ type: "shown" });
 
+  // —— Opening by itself (modal and sheet) ——
+  const stopTrigger: (() => void)[] = [];
+  function autoOpen() {
+    const state = controller.getState();
+    const allowed = options.when ? options.when(state) : !state.standalone && !state.installed;
+    if (allowed && !controller.isDismissed(options.showAgainAfter ?? Infinity)) api.open();
+  }
+  function armTrigger() {
+    const trigger = options.trigger ?? "manual";
+    if (!dialog || trigger === "manual") return;
+    if (trigger === "load") {
+      const id = setTimeout(autoOpen, 0);
+      stopTrigger.push(() => clearTimeout(id));
+    } else if (trigger === "gesture") {
+      const once = () => {
+        off();
+        // After the gesture's own click has been handled.
+        setTimeout(autoOpen, 0);
+      };
+      const off = () => {
+        doc.removeEventListener("pointerup", once, true);
+        doc.removeEventListener("keydown", once, true);
+      };
+      doc.addEventListener("pointerup", once, true);
+      doc.addEventListener("keydown", once, true);
+      stopTrigger.push(off);
+    } else {
+      const id = setTimeout(autoOpen, Math.max(0, trigger.delay));
+      stopTrigger.push(() => clearTimeout(id));
+    }
+  }
+
   const api: InstallAssistant = {
     controller,
     element: root,
@@ -310,6 +400,7 @@ export function createInstallAssistant(
       render(controller.getState(), true);
     },
     destroy() {
+      stopTrigger.forEach((stop) => stop());
       unsubscribe();
       for (const name of order) sections[name]?.part?.destroy?.();
       if (dialog?.open) {
@@ -321,5 +412,6 @@ export function createInstallAssistant(
       root.remove();
     },
   };
+  armTrigger();
   return api;
 }

@@ -269,7 +269,10 @@ export function iosAssistant(ctx: UiContext, initial: InstallState, guide: Guide
       const host = ctx.overlayHost();
       if (ios.spot) overlays.push(arrowOverlay(ctx, ios.spot));
       overlays.push(topHint(ctx, ios));
-      overlays.forEach((o) => host.appendChild(o));
+      overlays.forEach((o) => {
+        ctx.decorate(o);
+        host.appendChild(o);
+      });
     }
   }
 

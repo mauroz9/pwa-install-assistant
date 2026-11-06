@@ -4,6 +4,8 @@ export {
   type AssistantMode,
   type InstallAssistant,
   type InstallAssistantOptions,
+  type Theme,
+  type Trigger,
 } from "./ui/assistant";
 export { buildGuide, hasSteps, PICKER_GROUPS, STEP_GUIDES, type Guide, type Scene, type Step } from "./ui/guides";
 export { fill, mergeMessages, resolveLocale, type DeepPartial, type Messages } from "./ui/i18n";
