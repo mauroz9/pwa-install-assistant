@@ -23,6 +23,7 @@ import { detectedLine, installedCard, picker, seenNotice } from "./parts";
 import type { Illustrations } from "./scene";
 import { stepper } from "./stepper";
 import { injectStyles } from "./styles";
+import { promptAssistant, promptButton } from "./views/prompt";
 
 export type AssistantMode = "inline" | "modal" | "sheet";
 
@@ -200,8 +201,8 @@ export function createInstallAssistant(
       diagnostics: "",
       notice: state.guideSeen && !state.picked && stepGuide && guideShown && !state.installed ? "on" : "",
       detected: hidePicker || !state.guide ? "" : `${state.guide}|${state.picked}`,
-      prompt: "",
-      orMenu: "",
+      prompt: state.prompt && state.view === "guide" ? state.prompt : "",
+      orMenu: state.prompt && state.view === "guide" && !state.promptFinishing && hasSteps(state.guide) ? "on" : "",
       main: state.promptFinishing ? "" : `${state.view}|${state.guide}`,
       picker: hidePicker ? "" : `${state.guide ?? ""}`,
     };
@@ -218,7 +219,7 @@ export function createInstallAssistant(
         return el ? { el } : null;
       }
       case "prompt":
-        return null;
+        return state.prompt === "assistant" ? promptAssistant(ctx, state) : promptButton(ctx);
       case "orMenu":
         return { el: h("h2", { class: "pia-h4" }, messages.common.orFromMenu) };
       case "main":
