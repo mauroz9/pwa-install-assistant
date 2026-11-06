@@ -29,6 +29,8 @@
   "bugs": "https://github.com/mauroz9/pwa-install-assistant/issues",
   "type": "module",
   "sideEffects": [
+    "./dist/element.js",
+    "./dist/element.cjs",
     "*.css"
   ],
   "main": "./dist/index.cjs",
@@ -49,6 +51,31 @@
       "types": "./dist/qr.d.ts",
       "import": "./dist/qr.js",
       "require": "./dist/qr.cjs"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
+    },
+    "./vue": {
+      "types": "./dist/vue.d.ts",
+      "import": "./dist/vue.js",
+      "require": "./dist/vue.cjs"
+    },
+    "./svelte": {
+      "types": "./dist/svelte.d.ts",
+      "import": "./dist/svelte.js",
+      "require": "./dist/svelte.cjs"
+    },
+    "./solid": {
+      "types": "./dist/solid.d.ts",
+      "import": "./dist/solid.js",
+      "require": "./dist/solid.cjs"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js",
+      "require": "./dist/element.cjs"
     },
     "./locales/en": {
       "types": "./dist/locales/en.d.ts",
@@ -90,7 +117,8 @@
     "LICENSE"
   ],
   "workspaces": [
-    "demo"
+    "demo",
+    "examples/*"
   ],
   "scripts": {
     "build": "tsup && node scripts/postbuild.mjs",
@@ -103,13 +131,36 @@
     "check:pack": "node scripts/check-pack.mjs",
     "demo": "npm run build && npm run dev -w demo",
     "test:e2e": "playwright test",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "build:examples": "for ex in html next nuxt sveltekit astro remix solid angular; do npm run build -w examples/$ex || exit 1; done"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "solid-js": ">=1.6",
+    "svelte": ">=4",
+    "vue": ">=3.2"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "solid-js": {
+      "optional": true
+    },
+    "svelte": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.65.0",
     "@types/pngjs": "^6.0.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
@@ -117,9 +168,14 @@
     "jsqr": "^1.4.0",
     "pngjs": "^7.0.0",
     "prettier": "^3.9.10",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "solid-js": "^1.9.18",
+    "svelte": "^5.57.3",
     "tsup": "^9.0.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1",
-    "vitest": "^5.1.0"
+    "vitest": "^5.1.0",
+    "vue": "^3.5.45"
   }
 }
