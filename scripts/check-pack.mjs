@@ -3,8 +3,13 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
-const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], { encoding: "utf8" });
-const [info] = JSON.parse(out);
+const out = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], {
+  encoding: "utf8",
+  env: { ...process.env, npm_config_ignore_scripts: "true" },
+});
+// Some npm versions still run `prepare` and print the build before the JSON.
+const json = out.slice(out.search(/^\[\s*\{/m));
+const [info] = JSON.parse(json);
 const files = info.files.map((f) => f.path);
 const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 
