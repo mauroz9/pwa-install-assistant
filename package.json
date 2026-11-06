@@ -62,6 +62,7 @@
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "size": "node scripts/size.mjs",
+    "check:pack": "node scripts/check-pack.mjs",
     "demo": "npm run build && npm run dev -w demo",
     "test:e2e": "playwright test",
     "prepare": "npm run build"
