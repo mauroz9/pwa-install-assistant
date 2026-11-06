@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "Acme Notes · pwa-install-assistant demo",
+  "short_name": "Acme Notes",
+  "description": "Demo of pwa-install-assistant: install it to see the «installed» screen.",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1546d1",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "related_applications": [{ "platform": "webapp", "url": "./manifest.webmanifest" }]
+}
