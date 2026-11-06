@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Size budget
+        run: npm run size
+      - name: Package contents
+        run: |
+          npm pack --dry-run --json > pack.json
+          node -e '
+            const [p] = require("./pack.json");
+            const files = p.files.map((f) => f.path);
+            const must = ["package.json", "LICENSE", "README.md", "dist/index.js", "dist/index.cjs", "dist/index.d.ts"];
+            const missing = must.filter((f) => !files.includes(f));
+            const stray = files.filter((f) => !/^(dist\/|package\.json$|LICENSE$|README(\.es)?\.md$)/.test(f));
+            if (missing.length || stray.length) { console.error({ missing, stray }); process.exit(1); }
+            console.log(files.length + " files, " + p.size + " bytes");
+          '
+      - run: npm run build -w demo
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test

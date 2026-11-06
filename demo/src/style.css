@@ -1,0 +1,86 @@
+:root {
+  --bg: #07080d;
+  --fg: #f4f3ef;
+  --dim: rgba(244, 243, 239, 0.62);
+  --faint: rgba(244, 243, 239, 0.34);
+  --ghost: rgba(244, 243, 239, 0.1);
+  --accent: #8fb3ff;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  background: var(--bg);
+}
+body {
+  margin: 0;
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(90, 130, 255, 0.14), transparent 70%), var(--bg);
+  color: var(--fg);
+  font:
+    16px/1.55 system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: inherit;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 3px;
+}
+.hero {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: clamp(2.6rem, 9vh, 5.5rem) 16px 2rem;
+  text-align: center;
+}
+.eyebrow {
+  margin: 0 0 1.2rem;
+  color: var(--accent);
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+h1 {
+  margin: 0;
+  font:
+    500 clamp(1.9rem, 5vw, 3.2rem) / 1.08 Georgia,
+    "Times New Roman",
+    serif;
+  text-wrap: balance;
+}
+.lede {
+  margin: 1rem auto 0;
+  max-width: 36rem;
+  color: var(--dim);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+  margin-top: 1.5rem;
+}
+.ghost {
+  color: var(--dim);
+  font-size: 0.9rem;
+}
+.install {
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--ghost);
+  border-radius: 999px;
+}
+.install code {
+  font:
+    0.92rem ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+.version {
+  color: var(--faint);
+  font-size: 0.8rem;
+}
