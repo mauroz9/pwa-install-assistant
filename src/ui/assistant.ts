@@ -25,6 +25,7 @@ import { stepper } from "./stepper";
 import { injectStyles } from "./styles";
 import { diagnostics } from "./views/diagnostics";
 import { iosAssistant } from "./views/ios";
+import { desktopView, inAppView } from "./views/links";
 import { promptAssistant, promptButton } from "./views/prompt";
 
 export type AssistantMode = "inline" | "modal" | "sheet";
@@ -51,6 +52,11 @@ export interface InstallAssistantOptions extends Omit<ControllerOptions, "force"
   nonce?: string;
   /** `false`: do not inject CSS (import `pwa-install-assistant/style.css` yourself). */
   injectStyles?: boolean;
+  /**
+   * Desktop QR code: `true` (default, generated locally and loaded on demand), `false` (link only),
+   * or your own `(url) => SVGElement`.
+   */
+  qr?: boolean | ((url: string) => SVGElement);
   /** Event panel and every implemented assisted flow on, to test on a device. */
   debug?: boolean;
 }
@@ -184,7 +190,7 @@ export function createInstallAssistant(
         pickerSelect?.scrollIntoView?.({ block: "center", behavior: "smooth" });
       },
       arrow: { size: 44 },
-      qr: true,
+      qr: options.qr ?? true,
       overlayHost: () => doc.body,
       hideContainer() {
         if (dialog?.open) {
@@ -247,11 +253,9 @@ export function createInstallAssistant(
         return hasSteps(state.guide) ? stepper(ctx, buildGuide(state.guide, messages, ctx.app)) : null;
       case "in-app":
       case "open-safari":
-        return {
-          el: h("p", { class: "pia-card pia-p" }, fill(messages.inApp.title, { browser: messages.inApp.yourBrowser })),
-        };
+        return inAppView(ctx, state);
       case "desktop":
-        return { el: h("p", { class: "pia-card pia-p" }, fill(messages.desktop.textNoQr, {})) };
+        return desktopView(ctx);
     }
   }
 

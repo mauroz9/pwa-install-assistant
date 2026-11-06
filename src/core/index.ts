@@ -83,3 +83,4 @@ export {
   type IosArrowState,
   type PromptMode,
 } from "./controller";
+export { externalBrowserName, openInBrowserUrl } from "./links";
