@@ -135,7 +135,7 @@ export const CSS = /* css */ `
 /* Step chips */
 .pia-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
 .pia-chip {
-  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
+  display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px;
   border: 1.5px dashed var(--pia-line-strong); background: transparent; color: var(--pia-faint);
   font: inherit; font-size: 1.1rem; font-weight: 800; line-height: 1; cursor: pointer;
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
