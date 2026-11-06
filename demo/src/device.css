@@ -1,0 +1,104 @@
+:root {
+  color-scheme: light;
+}
+html,
+body {
+  margin: 0;
+  background: #f4f6fb;
+  font:
+    16px/1.5 system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: #172030;
+}
+.app {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 16px 16px 120px;
+}
+.app-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.app-head img {
+  border-radius: 22%;
+}
+.app-name {
+  margin: 0;
+  font-weight: 800;
+}
+.app-sub {
+  margin: 0;
+  color: #46536a;
+  font-size: 0.9rem;
+}
+#native {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483600;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(10, 14, 24, 0.45);
+}
+#native[hidden] {
+  display: none;
+}
+.native-sheet {
+  width: 100%;
+  padding: 20px 20px 28px;
+  border-radius: 24px 24px 0 0;
+  background: #fff;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.25);
+}
+.native-title {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.native-app {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.native-app img {
+  width: 48px;
+  height: 48px;
+  border-radius: 22%;
+}
+.native-app div {
+  display: flex;
+  flex-direction: column;
+}
+.native-app span {
+  color: #46536a;
+  font-size: 0.85rem;
+}
+.native-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+.native-actions button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #0b57d0;
+  font: inherit;
+  font-weight: 600;
+}
+.native-actions button:last-child {
+  background: #0b57d0;
+  color: #fff;
+}
+.native-note {
+  margin: 16px 0 0;
+  color: #8390a6;
+  font-size: 0.75rem;
+}

@@ -6,7 +6,11 @@ export default defineConfig({
   base: process.env.PAGES_BASE ?? "/",
   build: {
     rolldownOptions: {
-      input: { main: resolve(__dirname, "index.html"), csp: resolve(__dirname, "csp.html") },
+      input: {
+        main: resolve(__dirname, "index.html"),
+        device: resolve(__dirname, "device.html"),
+        csp: resolve(__dirname, "csp.html"),
+      },
     },
   },
 });
