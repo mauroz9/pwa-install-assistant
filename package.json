@@ -1,6 +1,6 @@
 {
   "name": "pwa-install-assistant",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Get your web app onto the home screen: an install assistant that points at the real button on every phone and tablet, and moves on by itself where the browser allows. Vanilla, React, Vue, Svelte, Solid, Angular, Web Component.",
   "keywords": [
     "pwa",
@@ -132,7 +132,12 @@
     "demo": "npm run build && npm run dev -w demo",
     "test:e2e": "playwright test",
     "prepare": "npm run build",
-    "build:examples": "for ex in html next nuxt sveltekit astro remix solid angular; do npm run build -w examples/$ex || exit 1; done"
+    "build:examples": "for ex in html next nuxt sveltekit astro remix solid angular; do npm run build -w examples/$ex || exit 1; done",
+    "release:notes": "node scripts/release-notes.mjs"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "peerDependencies": {
     "react": ">=18",
